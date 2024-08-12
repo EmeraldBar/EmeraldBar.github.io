@@ -1,7 +1,7 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #e5e5cc; /* Subtle light background */
-    color: #004d40; /* Dark teal text */
+    background-color: #014421; /* Dark emerald green background */
+    color: #ffffff; /* White text */
     margin: 0;
     padding: 20px;
     display: flex;
@@ -11,7 +11,7 @@ body {
 
 h1 {
     font-size: 2.5em;
-    color: #006400; /* Deep green */
+    color: #B59410; /* Gold */
     text-align: center;
     margin-bottom: 10px;
 }
@@ -19,7 +19,7 @@ h1 {
 h4 {
     font-size: 1.5em;
     text-align: center;
-    color: #004d40; /* Dark teal */
+    color: #ffffff; /* White text */
     margin-bottom: 20px;
 }
 
@@ -27,9 +27,9 @@ form {
     max-width: 400px;
     width: 100%;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.9); /* Light background */
+    background: rgba(255, 255, 255, 0.1); /* Light translucent background */
     border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 input[type="text"],
@@ -38,22 +38,22 @@ button {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: 2px solid #006400; /* Deep green border */
+    border: 2px solid #B59410; /* Gold border */
     border-radius: 10px;
     background: #ffffff; /* White input background */
-    color: #004d40; /* Dark teal text */
+    color: #014421; /* Dark emerald green text */
     font-size: 1em;
     transition: transform 0.2s, border-color 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus {
-    border-color: #004d40; /* Darker teal on focus */
+    border-color: #B59410; /* Gold on focus */
     outline: none;
 }
 
 button {
-    background-color: #b8860b; /* Dark gold */
+    background-color: #B59410; /* Gold */
     color: #ffffff; /* White text */
     cursor: pointer;
     font-weight: bold;
@@ -62,15 +62,15 @@ button {
 
 button:hover {
     transform: scale(1.05); /* Pop-out effect */
-    background-color: #8b6914; /* Darker gold */
+    background-color: #99750c; /* Darker gold */
 }
 
 .manager-button {
-    background-color: #b8860b; /* Dark gold */
+    background-color: #B59410; /* Gold */
 }
 
 .manager-button:hover {
-    background-color: #8b6914; /* Darker gold */
+    background-color: #99750c; /* Darker gold */
 }
 
 .sidebar {
