@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f4c3; /* Light emerald background */
+    background-color: #e5e5cc; /* Subtle light background */
     color: #004d40; /* Dark teal text */
     margin: 0;
     padding: 20px;
@@ -11,7 +11,7 @@ body {
 
 h1 {
     font-size: 2.5em;
-    color: #388e3c; /* Emerald green */
+    color: #006400; /* Deep green */
     text-align: center;
     margin-bottom: 10px;
 }
@@ -38,7 +38,7 @@ button {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: 2px solid #388e3c; /* Emerald green border */
+    border: 2px solid #006400; /* Deep green border */
     border-radius: 10px;
     background: #ffffff; /* White input background */
     color: #004d40; /* Dark teal text */
@@ -53,7 +53,7 @@ input[type="number"]:focus {
 }
 
 button {
-    background-color: #388e3c; /* Emerald green */
+    background-color: #b8860b; /* Dark gold */
     color: #ffffff; /* White text */
     cursor: pointer;
     font-weight: bold;
@@ -62,15 +62,15 @@ button {
 
 button:hover {
     transform: scale(1.05); /* Pop-out effect */
-    background-color: #2e7d32; /* Darker emerald green */
+    background-color: #8b6914; /* Darker gold */
 }
 
 .manager-button {
-    background-color: #81c784; /* Light emerald */
+    background-color: #b8860b; /* Dark gold */
 }
 
 .manager-button:hover {
-    background-color: #66bb6a; /* Medium emerald */
+    background-color: #8b6914; /* Darker gold */
 }
 
 .sidebar {
