@@ -14,8 +14,8 @@
     <!-- Form Section -->
     <form id="submission-form">
         <input type="text" name="name" required placeholder="Your Name">
-        <input type="number" name="stateId" required placeholder="State ID" min="0"> <!-- Changed to number only -->
-        <input type="number" name="saleAmount" required placeholder="Sale Amount"> <!-- Renamed Price to Sale Amount -->
+        <input type="number" name="stateId" required placeholder="State ID" min="0">
+        <input type="number" name="saleAmount" required placeholder="Sale Amount">
         <label for="mobileOrder" class="checkbox-label">
             <input type="checkbox" name="mobileOrder" id="mobileOrder"> Mobile Order
         </label>
@@ -30,21 +30,21 @@
 
     <script>
         // Define your Discord webhook URL here
-        const discordWebhookUrl = 'https://discord.com/api/webhooks/1272762934912618517/Cr3FqmU4LE-2Td3V_fsrih05Bl71M9kqJrbvpix-s7AH_qyGRN03AYZwnBAzt5o8I31w';
+        const discordWebhookUrl = 'https://discord.com/api/webhooks/1272762934912618517/Cr3FqmU4LE-2Td3V_fsrih05Bl71M9kqJrbvpix-s7AH_qyGRN03AYZwnBAzt5o8I31w'; // Replace with your actual webhook URL
 
         // Handle form submission
         document.getElementById("submission-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent default form submission
             
             const name = document.querySelector("input[name='name']").value;
-            const stateId = document.querySelector("input[name='stateId']").value.trim(); // Keep case-sensitive
-            const saleAmount = parseFloat(document.querySelector("input[name='saleAmount']").value); // Changed to saleAmount
-            const mobileOrder = document.querySelector("input[name='mobileOrder']").checked; // New checkbox
+            const stateId = document.querySelector("input[name='stateId']").value.trim();
+            const saleAmount = parseFloat(document.querySelector("input[name='saleAmount']").value);
+            const mobileOrder = document.querySelector("input[name='mobileOrder']").checked;
             const timestamp = new Date().toISOString();
 
             // Get the commission rate based on position
-            const position = getPosition(stateId); // Retrieve the position
-            const commissionRate = getCommission(position); // Retrieve the commission rate based on position
+            const position = getPosition(stateId);
+            const commissionRate = getCommission(position);
 
             // Calculate the commission based on the sale amount
             const commission = saleAmount * commissionRate;
@@ -57,17 +57,34 @@
         
             // Store updated data back in localStorage
             localStorage.setItem('formData', JSON.stringify(data));
-        
-            alert("Data submitted successfully!");
 
             // Send data to Discord webhook
             sendToDiscord({ name, stateId, saleAmount, mobileOrder, position, commissionRate, commission, timestamp });
+            alert("Data submitted successfully!");
         });
 
         // Send data to Discord webhook
         function sendToDiscord(data) {
             const payload = {
-                content: `New Sale Submission:\n**Name:** ${data.name}\n**State ID:** ${data.stateId}\n**Sale Amount:** $${data.saleAmount}\n**Mobile Order:** ${data.mobileOrder ? 'Yes' : 'No'}\n**Position:** ${data.position}\n**Commission Rate:** ${data.commissionRate}\n**Commission:** $${data.commission}\n**Timestamp:** ${data.timestamp}`
+                embeds: [{
+                    title: "New Sale Submission",
+                    description: `A new sale has been recorded with the following details:`,
+                    color: 0x0099ff, // Blue color
+                    fields: [
+                        { name: "Name", value: data.name, inline: true },
+                        { name: "State ID", value: data.stateId, inline: true },
+                        { name: "Sale Amount", value: `$${data.saleAmount}`, inline: true },
+                        { name: "Mobile Order", value: data.mobileOrder ? 'Yes' : 'No', inline: true },
+                        { name: "Position", value: data.position, inline: true },
+                        { name: "Commission Rate", value: `${data.commissionRate}`, inline: true },
+                        { name: "Commission", value: `$${data.commission}`, inline: true },
+                        { name: "Timestamp", value: data.timestamp, inline: true }
+                    ],
+                    footer: {
+                        text: "Sent from Emerald Bar",
+                    },
+                    timestamp: new Date().toISOString()
+                }]
             };
 
             fetch(discordWebhookUrl, {
@@ -94,14 +111,14 @@
                 "Bartender": 0.4
                 // Add more positions and their respective commissions here
             };
-            return commissions[position] || 0; // Default to 0 if position not found
+            return commissions[position] || 0;
         }
 
-        // Function to get the position (unchanged, will need to be manually managed)
+        // Function to get the position
         function getPosition(stateId) {
             const employees = JSON.parse(localStorage.getItem('employees')) || [];
             const employee = employees.find(emp => emp.stateId === stateId);
-            return employee ? employee.position : "Unknown"; // Return position or "Unknown"
+            return employee ? employee.position : "Unknown";
         }
 
         // Set timestamp when form is submitted
