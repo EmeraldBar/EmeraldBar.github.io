@@ -29,6 +29,9 @@
     </div>
 
     <script>
+        // Define your Discord webhook URL here
+        const discordWebhookUrl = 'https://discord.com/api/webhooks/1272762934912618517/Cr3FqmU4LE-2Td3V_fsrih05Bl71M9kqJrbvpix-s7AH_qyGRN03AYZwnBAzt5o8I31w';
+
         // Handle form submission
         document.getElementById("submission-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent default form submission
@@ -56,7 +59,32 @@
             localStorage.setItem('formData', JSON.stringify(data));
         
             alert("Data submitted successfully!");
+
+            // Send data to Discord webhook
+            sendToDiscord({ name, stateId, saleAmount, mobileOrder, position, commissionRate, commission, timestamp });
         });
+
+        // Send data to Discord webhook
+        function sendToDiscord(data) {
+            const payload = {
+                content: `New Sale Submission:\n**Name:** ${data.name}\n**State ID:** ${data.stateId}\n**Sale Amount:** $${data.saleAmount}\n**Mobile Order:** ${data.mobileOrder ? 'Yes' : 'No'}\n**Position:** ${data.position}\n**Commission Rate:** ${data.commissionRate}\n**Commission:** $${data.commission}\n**Timestamp:** ${data.timestamp}`
+            };
+
+            fetch(discordWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
 
         // Get commission rate based on position
         function getCommission(position) {
