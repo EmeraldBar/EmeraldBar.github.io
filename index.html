@@ -40,7 +40,7 @@
             const stateId = document.querySelector("input[name='stateId']").value.trim(); // Keep case-sensitive
             const saleAmount = parseFloat(document.querySelector("input[name='saleAmount']").value); // Changed to saleAmount
             const mobileOrder = document.querySelector("input[name='mobileOrder']").checked; // New checkbox
-            const timestamp = new Date().toISOString();
+            const timestamp = getESTTimestamp(); // Updated to get EST timestamp
 
             // Get the commission rate based on position
             const position = getPosition(stateId); // Retrieve the position
@@ -64,6 +64,34 @@
             sendToDiscord({ name, stateId, saleAmount, mobileOrder, position, commissionRate, commission, timestamp });
         });
 
+        // Get the position of the employee based on State ID (unchanged)
+        function getPosition(stateId) {
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            const employee = employees.find(emp => emp.stateId === stateId);
+            return employee ? employee.position : "Unknown"; // Return position or "Unknown"
+        }
+
+        // Get commission rate based on position
+        function getCommission(position) {
+            const commissions = {
+                "CEO": 0.10,
+                "Manager": 0.07,
+                "Cook": 0.05,
+                "Waiter": 0.03
+                // Add more positions and their respective commissions here
+            };
+            return commissions[position] || 0; // Default to 0 if position not found
+        }
+
+        // Function to get the timestamp in EST
+        function getESTTimestamp() {
+            const now = new Date();
+            const offset = -5; // EST is UTC-5
+            const est = new Date(now.getTime() + (offset - now.getTimezoneOffset() / 60) * 3600000);
+
+            return est.toISOString().replace('T', ' ').replace('Z', ' EST');
+        }
+
         // Send data to Discord webhook
         function sendToDiscord(data) {
             const payload = {
@@ -85,31 +113,6 @@
                 console.error('Error:', error);
             });
         }
-
-        // Get commission rate based on position
-        function getCommission(position) {
-            const commissions = {
-                "CEO": 0.10,
-                "Manager": 0.07,
-                "Cook": 0.05,
-                "Waiter": 0.03
-                // Add more positions and their respective commissions here
-            };
-            return commissions[position] || 0; // Default to 0 if position not found
-        }
-
-        // Function to get the position (unchanged, will need to be manually managed)
-        function getPosition(stateId) {
-            const employees = JSON.parse(localStorage.getItem('employees')) || [];
-            const employee = employees.find(emp => emp.stateId === stateId);
-            return employee ? employee.position : "Unknown"; // Return position or "Unknown"
-        }
-
-        // Set timestamp when form is submitted
-        document.getElementById("submission-form").addEventListener("submit", function() {
-            const timestampField = document.getElementById("timestamp");
-            timestampField.value = new Date().toISOString(); // Set the current timestamp
-        });
     </script>
 </body>
 </html>
