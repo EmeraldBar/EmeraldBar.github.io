@@ -41,6 +41,7 @@
                 <th>Sale Amount</th>
                 <th>Commission</th> <!-- Updated to show Commission Amount -->
                 <th>Mobile Order</th>
+                <th>Timestamp</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -63,11 +64,11 @@
                 newRow.insertCell(2).innerText = row.position;
                 newRow.insertCell(3).innerText = row.saleAmount; // Sale Amount
                 newRow.insertCell(4).innerText = commission.toFixed(2); // Commission Amount
-                newRow.insertCell(5).innerText = row.mobileOrder ? "Yes" : "No" // Display Mobile Order status
-            
+                newRow.insertCell(5).innerText = row.mobileOrder ? "Yes" : "No"; // Display Mobile Order status
+                newRow.insertCell(6).innerText = row.timestamp;   // Timestamp
                 
                 // Create delete button
-                const deleteCell = newRow.insertCell(6);
+                const deleteCell = newRow.insertCell(7);
                 const deleteButton = document.createElement("button");
                 deleteButton.innerText = "Delete";
                 deleteButton.className = "manager-button"; // Apply the CSS class
