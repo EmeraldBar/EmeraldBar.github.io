@@ -86,10 +86,23 @@
         // Function to get the timestamp in EST
         function getESTTimestamp() {
             const now = new Date();
-            const offset = -5; // EST is UTC-5
-            const est = new Date(now.getTime() + (offset - now.getTimezoneOffset() / 60) * 3600000);
-
-            return est.toISOString().replace('T', ' ').replace('Z', ' EST');
+            const options = {
+                timeZone: 'America/New_York',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            const formatter = new Intl.DateTimeFormat('en-US', options);
+            const parts = formatter.formatToParts(now);
+            const dateParts = {};
+            parts.forEach(({ type, value }) => {
+                dateParts[type] = value;
+            });
+            return `${dateParts.year}-${dateParts.month}-${dateParts.day} ${dateParts.hour}:${dateParts.minute}:${dateParts.second} EST`;
         }
 
         // Send data to Discord webhook
