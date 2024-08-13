@@ -34,20 +34,14 @@
             event.preventDefault(); // Prevent default form submission
             
             const name = document.querySelector("input[name='name']").value;
-            const stateId = document.querySelector("input[name='stateId']").value;
+            const stateId = document.querySelector("input[name='stateId']").value.trim(); // Keep case-sensitive
             const saleAmount = parseFloat(document.querySelector("input[name='saleAmount']").value); // Changed to saleAmount
             const mobileOrder = document.querySelector("input[name='mobileOrder']").checked; // New checkbox
             const timestamp = new Date().toISOString();
 
-            // Check if the state ID is employed
-            const position = getPosition(stateId);
-            if (!position) {
-                alert("State ID not found. Please ensure the employee is registered.");
-                return; // Stop submission
-            }
-
             // Get the commission rate based on position
-            const commissionRate = getCommission(position);
+            const position = getPosition(stateId); // Retrieve the position
+            const commissionRate = getCommission(position); // Retrieve the commission rate based on position
 
             // Calculate the commission based on the sale amount
             const commission = saleAmount * commissionRate;
@@ -64,13 +58,6 @@
             alert("Data submitted successfully!");
         });
 
-        // Get the position of the employee based on State ID
-        function getPosition(stateId) {
-            const employees = JSON.parse(localStorage.getItem('employees')) || [];
-            const employee = employees.find(emp => emp.stateId === stateId);
-            return employee ? employee.position : null; // Return position or null
-        }
-
         // Get commission rate based on position
         function getCommission(position) {
             const commissions = {
@@ -81,6 +68,13 @@
                 // Add more positions and their respective commissions here
             };
             return commissions[position] || 0; // Default to 0 if position not found
+        }
+
+        // Function to get the position (unchanged, will need to be manually managed)
+        function getPosition(stateId) {
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            const employee = employees.find(emp => emp.stateId === stateId);
+            return employee ? employee.position : "Unknown"; // Return position or "Unknown"
         }
 
         // Set timestamp when form is submitted
