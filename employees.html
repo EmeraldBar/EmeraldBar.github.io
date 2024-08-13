@@ -5,14 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee List</title>
     <link rel="stylesheet" href="employees.css">
-    <style>
-        /* Add some basic styles for the filter input */
-        #search-bar {
-            margin-bottom: 10px;
-            padding: 5px;
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
     <script>
@@ -33,6 +25,7 @@
     <h2>Add New Employee</h2>
     <form id="employee-form">
         <input type="text" id="employeeName" required placeholder="Employee Name">
+        <input type="text" id="employeePosition" required placeholder="Position">
         <input type="text" id="employeeContact" required placeholder="Contact Info">
         <input type="text" id="employeeStateId" required placeholder="State ID">
         <button type="submit">Add Employee</button>
@@ -88,13 +81,25 @@
                 const totalCommission = commissionMap[employee.stateId] || 0;
                 commissionCell.innerText = totalCommission.toFixed(2); // Display total commission
                 
-                // Create edit button
+                // Create edit and remove buttons
                 const actionsCell = newRow.insertCell(5);
+                
                 const editButton = document.createElement("button");
                 editButton.innerText = "Edit";
                 editButton.className = "manager-button"; // Apply the CSS class
                 editButton.onclick = () => editEmployee(index);
                 actionsCell.appendChild(editButton);
+
+                const removeButton = document.createElement("button");
+                removeButton.innerText = "Remove";
+                removeButton.className = "remove-button"; // Apply the CSS class
+                removeButton.onclick = () => {
+                    const confirmed = confirm("Are you sure you want to delete this employee?");
+                    if (confirmed) {
+                        removeEmployee(index);
+                    }
+                };
+                actionsCell.appendChild(removeButton);
             });
         }
 
@@ -107,6 +112,13 @@
             document.getElementById('employeeContact').value = employee.contact;
             document.getElementById('employeeStateId').value = employee.stateId;
             editingIndex = index; // Set index for editing
+        }
+
+        function removeEmployee(index) {
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            employees.splice(index, 1); // Remove the employee at the given index
+            localStorage.setItem('employees', JSON.stringify(employees));
+            loadEmployees(); // Refresh the employee table
         }
 
         document.getElementById('employee-form').addEventListener('submit', function(event) {
