@@ -39,6 +39,7 @@
                 <th>Position</th>
                 <th>Contact</th>
                 <th>State ID</th>
+                <th>Commission</th> <!-- Column for total commission -->
                 <th>Actions</th>
             </tr>
         </thead>
@@ -52,6 +53,18 @@
 
         function loadEmployees() {
             const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            const formData = JSON.parse(localStorage.getItem('formData')) || [];
+
+            // Calculate total commission per State ID
+            const commissionMap = {};
+            formData.forEach(data => {
+                const commission = data.saleAmount * data.commissionRate;
+                if (!commissionMap[data.stateId]) {
+                    commissionMap[data.stateId] = 0;
+                }
+                commissionMap[data.stateId] += parseFloat(commission);
+            });
+
             const tableBody = document.getElementById('employee-table').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = ""; // Clear existing rows
 
@@ -62,47 +75,33 @@
                 newRow.insertCell(2).innerText = employee.contact;
                 newRow.insertCell(3).innerText = employee.stateId;
 
-                // Create actions cell
-                const actionsCell = newRow.insertCell(4);
+                // Insert the total commission value for the employee's State ID
+                const commissionCell = newRow.insertCell(4);
+                const totalCommission = commissionMap[employee.stateId] || 0;
+                commissionCell.innerText = totalCommission.toFixed(2); // Display total commission
                 
                 // Create edit button
-const editButton = document.createElement("button");
-editButton.innerText = "Edit";
-editButton.className = "manager-button"; // Add the class for styling
-editButton.onclick = () => editEmployee(index);
-actionsCell.appendChild(editButton);
-
-// Create delete button
-const deleteButton = document.createElement("button");
-deleteButton.innerText = "Delete";
-deleteButton.className = "manager-button"; // Add the class for styling
-deleteButton.onclick = () => confirmDelete(index);
-actionsCell.appendChild(deleteButton);
-
+                const actionsCell = newRow.insertCell(5);
+                const editButton = document.createElement("button");
+                editButton.innerText = "Edit";
+                editButton.className = "manager-button"; // Apply the CSS class
+                editButton.onclick = () => editEmployee(index);
+                actionsCell.appendChild(editButton);
             });
         }
 
         function editEmployee(index) {
             const employees = JSON.parse(localStorage.getItem('employees')) || [];
             const employee = employees[index];
-
+            
             document.getElementById('employeeName').value = employee.name;
             document.getElementById('employeePosition').value = employee.position;
             document.getElementById('employeeContact').value = employee.contact;
             document.getElementById('employeeStateId').value = employee.stateId;
-
-            editingIndex = index; // Set editing index
-            document.querySelector("button[type='submit']").innerText = "Save Changes"; // Change button text
+            editingIndex = index; // Set index for editing
         }
 
-        function confirmDelete(index) {
-            const confirmation = confirm("Are you sure you want to delete?");
-            if (confirmation) {
-                deleteEmployee(index);
-            }
-        }
-
-        function addEmployee(event) {
+        document.getElementById('employee-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const name = document.getElementById('employeeName').value;
             const position = document.getElementById('employeePosition').value;
@@ -110,47 +109,20 @@ actionsCell.appendChild(deleteButton);
             const stateId = document.getElementById('employeeStateId').value;
 
             const employees = JSON.parse(localStorage.getItem('employees')) || [];
-
             if (editingIndex > -1) {
                 // Edit existing employee
                 employees[editingIndex] = { name, position, contact, stateId };
-                editingIndex = -1; // Reset editing index
-                document.querySelector("button[type='submit']").innerText = "Add Employee"; // Reset button text
+                editingIndex = -1;
             } else {
                 // Add new employee
                 employees.push({ name, position, contact, stateId });
             }
-
             localStorage.setItem('employees', JSON.stringify(employees));
             loadEmployees();
-            document.getElementById('employee-form').reset(); // Clear the form
-        }
+            this.reset();
+        });
 
-        function deleteEmployee(index) {
-            const employees = JSON.parse(localStorage.getItem('employees')) || [];
-            employees.splice(index, 1); // Remove the employee
-            localStorage.setItem('employees', JSON.stringify(employees));
-            loadEmployees(); // Refresh the table
-        }
-
-        document.getElementById('employee-form').addEventListener('submit', addEmployee);
         window.onload = loadEmployees;
-
-        // Inside the loadEmployees function
-const editButton = document.createElement("button");
-editButton.innerText = "Edit";
-editButton.className = "manager-button edit-button"; // Add class for styling
-editButton.onclick = () => editEmployee(index);
-actionsCell.appendChild(editButton);
-
-const deleteButton = document.createElement("button");
-deleteButton.innerText = "Delete";
-deleteButton.className = "manager-button delete-button"; // Add class for styling
-deleteButton.onclick = () => confirmDelete(index);
-actionsCell.appendChild(deleteButton);
-
     </script>
-    
-    
 </body>
 </html>

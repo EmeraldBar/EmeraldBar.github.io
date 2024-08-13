@@ -1,28 +1,43 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #e0f7fa; /* Light sea color */
-    color: #004d40; /* Dark sea color for text */
+    background-color: #000f0b; /* Dark background for the body */
+    color: #ffffff; /* White text for better contrast */
     margin: 0;
     padding: 20px;
 }
 
 h1, h2 {
-    color: #00796b; /* Main heading color */
+    color: #088F8F; /* Dark teal for headings */
 }
 
 .manager-button {
-    background-color: #00897b; /* Sea-themed button color */
+    background-color: #088F8F; /* Matching the dark teal theme */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s; /* Add transition for background color */
+    transition: transform 0.2s, background-color 0.3s;
 }
 
 .manager-button:hover {
-    transform: scale(1.05); /* Button pop out effect */
-    background-color: #004d40; /* Darker shade on hover */
+    transform: scale(1.05); /* Button pop-out effect */
+    background-color: #006f6f; /* Darker shade of teal on hover */
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #088F8F; /* Match button border color */
+    border-radius: 5px;
+    font-size: 1em;
+    color: #ffffff; /* White text for the search input */
+    background-color: #004d40; /* Dark background for input to match the theme */
+}
+
+input[type="text"]::placeholder {
+    color: #b2dfdb; /* Light teal for placeholder text */
 }
 
 table {
@@ -34,25 +49,44 @@ table {
 th, td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #333; /* Darker border color for table */
 }
 
 th {
-    background-color: #a7ffeb; /* Light sea-themed color for header */
-    color: #004d40; /* Darker text for header */
+    background-color: #004d40; /* Darker green for header background */
+    color: #ffffff; /* White text for headers */
 }
-#commission-table {
+
+#data-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-#commission-table th, #commission-table td {
+#data-table th, #data-table td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #333; /* Consistent border color */
 }
 
-#commission-table th {
-    background-color: #004d40; /* Header background */
-    color: white;
+#data-table th {
+    background-color: #004d40; /* Consistent dark green for header background */
+    color: white; /* White text for headers */
+}
+
+/* New styles for the filter checkbox */
+.filter-container {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    accent-color: #088F8F; /* Matching the checkbox accent color with the theme */
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+label {
+    color: #088F8F; /* Matching label text color with the theme */
+    font-size: 1em;
 }

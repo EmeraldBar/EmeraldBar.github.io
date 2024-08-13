@@ -12,7 +12,7 @@
     
     <script>
         const password = prompt("Enter password to access this page:");
-        if (password !== "PearlsManager") {
+        if (password !== "EmeraldManager") {
             alert("Access denied!");
             window.location.href = "index.html"; // Redirect to the form page
         }
@@ -20,10 +20,16 @@
 
     <h2>Submitted Data</h2>
     <div>
-        <!-- Button to Manage Employees -->
-        <button class="manager-button" onclick="location.href='commission.html'">Commission Values</button>
+        <!-- Buttons and Search Bar -->
         <button class="manager-button" onclick="location.href='employees.html'">Manage Employees</button>
         <button class="manager-button" onclick="location.href='index.html'">Back to Form</button>
+        <button class="manager-button" onclick="clearAll()">Clear All</button> <!-- Clear All Button -->
+        <input type="text" id="search-bar" placeholder="Search by Name or State ID" onkeyup="filterTable()">
+        
+        <!-- Checkbox to toggle Mobile Orders filter -->
+        <label for="mobile-order-filter" style="color: #ffffff;">
+            <input type="checkbox" id="mobile-order-filter" onchange="filterByMobileOrder()"> Filter by Mobile Orders
+        </label>
     </div>
     
     <table id="data-table">
@@ -32,8 +38,9 @@
                 <th>Name</th>
                 <th>State ID</th>
                 <th>Position</th>
-                <th>Price</th>
-                <th>Commission Rate</th>
+                <th>Sale Amount</th>
+                <th>Commission</th> <!-- Updated to show Commission Amount -->
+                <th>Mobile Order</th>
                 <th>Timestamp</th>
                 <th>Actions</th>
             </tr>
@@ -50,16 +57,18 @@
             tableBody.innerHTML = ""; // Clear existing rows
 
             data.forEach((row, index) => {
+                const commission = row.saleAmount * row.commissionRate;
                 const newRow = tableBody.insertRow();
                 newRow.insertCell(0).innerText = row.name;       // Name
                 newRow.insertCell(1).innerText = row.stateId;    // State ID
                 newRow.insertCell(2).innerText = row.position;
-                newRow.insertCell(3).innerText = row.price;      // Price
-                newRow.insertCell(4).innerText = (row.commissionRate * row.price).toFixed(2); // Commission Calculation
-                newRow.insertCell(5).innerText = row.timestamp;   // Timestamp
+                newRow.insertCell(3).innerText = row.saleAmount; // Sale Amount
+                newRow.insertCell(4).innerText = commission.toFixed(2); // Commission Amount
+                newRow.insertCell(5).innerText = row.mobileOrder ? "Yes" : "No"; // Display Mobile Order status
+                newRow.insertCell(6).innerText = row.timestamp;   // Timestamp
                 
                 // Create delete button
-                const deleteCell = newRow.insertCell(6);
+                const deleteCell = newRow.insertCell(7);
                 const deleteButton = document.createElement("button");
                 deleteButton.innerText = "Delete";
                 deleteButton.className = "manager-button"; // Apply the CSS class
@@ -70,7 +79,7 @@
 
         function confirmDelete(index) {
             const password = prompt("Enter password to confirm deletion:");
-            if (password === "OWNER") {
+            if (password === "OWNER") { // Original password for deletion
                 deleteEntry(index);
             } else {
                 alert("Incorrect password. Entry not deleted.");
@@ -82,6 +91,50 @@
             data.splice(index, 1); // Remove the entry
             localStorage.setItem('formData', JSON.stringify(data)); // Update localStorage
             loadData(); // Refresh the table
+        }
+
+        function clearAll() {
+            const password = prompt("Enter password to clear all data:");
+            if (password === "OWNER") { // Password to clear all data
+                localStorage.removeItem('formData'); // Clear all data
+                loadData(); // Refresh the table
+                alert("All data cleared.");
+            } else {
+                alert("Incorrect password. Data not cleared.");
+            }
+        }
+
+        function filterTable() {
+            const searchValue = document.getElementById('search-bar').value.toLowerCase();
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const name = row.cells[0].innerText.toLowerCase();
+                const stateId = row.cells[1].innerText.toLowerCase();
+                if (name.includes(searchValue) || stateId.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function filterByMobileOrder() {
+            const isChecked = document.getElementById('mobile-order-filter').checked;
+            const rows = document.querySelectorAll('#data-table tbody tr');
+
+            rows.forEach(row => {
+                const mobileOrder = row.cells[5].innerText === "Yes";
+                if (isChecked) {
+                    if (mobileOrder) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                } else {
+                    row.style.display = ''; // Show all rows if checkbox is unchecked
+                }
+            });
         }
 
         window.onload = loadData;

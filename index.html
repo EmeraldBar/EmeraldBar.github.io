@@ -14,8 +14,11 @@
     <!-- Form Section -->
     <form id="submission-form">
         <input type="text" name="name" required placeholder="Your Name">
-        <input type="text" name="stateId" required placeholder="State ID">
-        <input type="number" name="price" required placeholder="Price">
+        <input type="number" name="stateId" required placeholder="State ID" min="0"> <!-- Changed to number only -->
+        <input type="number" name="saleAmount" required placeholder="Sale Amount"> <!-- Renamed Price to Sale Amount -->
+        <label for="mobileOrder" class="checkbox-label">
+            <input type="checkbox" name="mobileOrder" id="mobileOrder"> Mobile Order
+        </label>
         <input type="hidden" name="timestamp" id="timestamp">
         <button type="submit">Submit</button>
     </form>
@@ -32,7 +35,8 @@
             
             const name = document.querySelector("input[name='name']").value;
             const stateId = document.querySelector("input[name='stateId']").value;
-            const price = parseFloat(document.querySelector("input[name='price']").value);
+            const saleAmount = parseFloat(document.querySelector("input[name='saleAmount']").value); // Changed to saleAmount
+            const mobileOrder = document.querySelector("input[name='mobileOrder']").checked; // New checkbox
             const timestamp = new Date().toISOString();
 
             // Check if the state ID is employed
@@ -45,14 +49,14 @@
             // Get the commission rate based on position
             const commissionRate = getCommission(position);
 
-            // Calculate the commission based on the price
-            const commission = price * commissionRate;
+            // Calculate the commission based on the sale amount
+            const commission = saleAmount * commissionRate;
 
             // Retrieve existing data or initialize an empty array
             const data = JSON.parse(localStorage.getItem('formData')) || [];
         
             // Add new submission to the data array
-            data.push({ name, stateId, price, position, commissionRate, commission, timestamp });
+            data.push({ name, stateId, saleAmount, mobileOrder, position, commissionRate, commission, timestamp });
         
             // Store updated data back in localStorage
             localStorage.setItem('formData', JSON.stringify(data));

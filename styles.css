@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #014421; /* Dark emerald green background */
+    background-color: #000f0b; /* Very dark green/black background */
     color: #ffffff; /* White text */
     margin: 0;
     padding: 20px;
@@ -11,7 +11,7 @@ body {
 
 h1 {
     font-size: 2.5em;
-    color: #B59410; /* Gold */
+    color: #088F8F; /* Teal color */
     text-align: center;
     margin-bottom: 10px;
 }
@@ -38,22 +38,22 @@ button {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: 2px solid #B59410; /* Gold border */
+    border: 2px solid #088F8F; /* Teal border */
     border-radius: 10px;
     background: #ffffff; /* White input background */
-    color: #014421; /* Dark emerald green text */
+    color: #000f0b; /* Very dark green/black text */
     font-size: 1em;
     transition: transform 0.2s, border-color 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus {
-    border-color: #B59410; /* Gold on focus */
+    border-color: #088F8F; /* Teal on focus */
     outline: none;
 }
 
 button {
-    background-color: #B59410; /* Gold */
+    background-color: #088F8F; /* Teal */
     color: #ffffff; /* White text */
     cursor: pointer;
     font-weight: bold;
@@ -62,15 +62,15 @@ button {
 
 button:hover {
     transform: scale(1.05); /* Pop-out effect */
-    background-color: #99750c; /* Darker gold */
+    background-color: #065d5d; /* Darker teal */
 }
 
 .manager-button {
-    background-color: #B59410; /* Gold */
+    background-color: #088F8F; /* Teal */
 }
 
 .manager-button:hover {
-    background-color: #99750c; /* Darker gold */
+    background-color: #065d5d; /* Darker teal */
 }
 
 .sidebar {
@@ -93,3 +93,25 @@ button:hover {
     width: 70px; /* Adjust size as needed */
     height: auto; /* Maintain aspect ratio */
 }
+/* Style for the checkbox label */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* White text to match the theme */
+    font-size: 1em;
+    margin: 10px 0;
+}
+
+/* Style the checkbox to match the theme */
+.checkbox-label input[type="checkbox"] {
+    accent-color: #088F8F; /* Teal color to match the theme */
+    width: 20px; /* Adjust size if needed */
+    height: 20px; /* Adjust size if needed */
+    margin-right: 10px; /* Space between checkbox and label */
+}
+
+/* Optional: Additional styling for better appearance */
+.checkbox-label input[type="checkbox"]:checked {
+    background-color: #065d5d; /* Darker teal when checked */
+}
+
